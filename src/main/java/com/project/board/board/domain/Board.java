@@ -1,6 +1,7 @@
 package com.project.board.board.domain;
 
 import com.project.board.base.BaseEntity;
+import com.project.board.board.dto.BoardSaveForm;
 import com.project.board.member.domain.Member;
 import com.project.board.reply.domain.Reply;
 import lombok.*;
@@ -35,6 +36,22 @@ public class Board extends BaseEntity {
 
     public Board(String title){
         this.title=title;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+        member.getBoards().add(this);
+    }
+
+    public void setReplies(Reply reply) {
+        replies.add(reply);
+        reply.setBoard(this);
+    }
+    public static Board save(int groupId,BoardSaveForm saveForm){
+        Board board = new Board();
+        board.title=saveForm.getTitle();
+        board.content=saveForm.getContent();
+        return board;
     }
 
     private String substringTitle(Board b) {

@@ -1,4 +1,4 @@
-package com.project.board.common.search;
+package com.project.board.board.search;
 
 import lombok.Data;
 
@@ -6,4 +6,5 @@ import lombok.Data;
 public class BoardSearchCondition {
     private String name;
     private String title;
+    private String all;
 }

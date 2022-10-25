@@ -1,5 +1,6 @@
 package com.project.board.member.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.board.board.domain.Board;
 import com.project.board.base.BaseTimeEntity;
 import com.project.board.reply.domain.Reply;
@@ -31,4 +32,8 @@ public class Member extends BaseTimeEntity {
         this.username=username;
     }
 
+    public void setReplies(Reply reply) {
+        this.replies.add(reply);
+        reply.setMember(this);
+    }
 }
