@@ -8,4 +8,5 @@ public interface BoardRepositoryCustom {
     Page<Board>searchForUsername(String username, Pageable pageable);
     Page<Board>searchByTitle(String title,Pageable pageable);
     Page<Board>searchByUsernameAndTitle(String text,Pageable pageable);
+    Page<Board>searchAll(Pageable pageable);
 }

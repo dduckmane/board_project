@@ -46,17 +46,71 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom{
                 .where(usernameEq(username));
         return PageableExecutionUtils.getPage(result,pageable,CountQuery::fetchOne);
     }
-    private BooleanExpression usernameEq(String username){
-        return hasText(username) ? member.username.contains(username) : null;
-    }
 
     @Override
     public Page<Board> searchByTitle(String title, Pageable pageable) {
-        return null;
+
+        List<Board> result = queryFactory
+                .select(board).distinct()
+                .from(board)
+                .join(board.member,member).fetchJoin()
+                .join(board.replies,reply)
+                .where(titleEq(title))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+        JPAQuery<Long> CountQuery = queryFactory
+                .select(board.count()).distinct()
+                .from(board)
+                .join(board.member,member)
+                .join(board.replies,reply)
+                .where(titleEq(title));
+        return PageableExecutionUtils.getPage(result,pageable,CountQuery::fetchOne);
     }
 
     @Override
     public Page<Board> searchByUsernameAndTitle(String text, Pageable pageable) {
-        return null;
+        List<Board> result = queryFactory
+                .select(board).distinct()
+                .from(board)
+                .join(board.member,member).fetchJoin()
+                .join(board.replies,reply)
+                .where(usernameOrTitleEq(text))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+        JPAQuery<Long> CountQuery = queryFactory
+                .select(board.count()).distinct()
+                .from(board)
+                .join(board.member,member)
+                .join(board.replies,reply)
+                .where(usernameOrTitleEq(text));
+        return PageableExecutionUtils.getPage(result,pageable,CountQuery::fetchOne);
+    }
+
+    @Override
+    public Page<Board> searchAll(Pageable pageable) {
+        List<Board> result = queryFactory
+                .select(board).distinct()
+                .from(board)
+                .join(board.member,member).fetchJoin()
+                .join(board.replies,reply)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+        JPAQuery<Long> CountQuery = queryFactory
+                .select(board.count())
+                .from(board);
+        return PageableExecutionUtils.getPage(result,pageable,CountQuery::fetchOne);
+    }
+
+    private BooleanExpression usernameEq(String username){
+        return hasText(username) ? member.username.contains(username) : null;
+    }
+    private BooleanExpression titleEq(String title){
+        return hasText(title) ? board.title.contains(title) : null;
+    }
+    private BooleanExpression usernameOrTitleEq(String text){
+        return hasText(text) ? board.title.contains(text).or(member.username.contains(text)) : null;
     }
 }
