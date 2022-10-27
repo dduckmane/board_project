@@ -2,6 +2,7 @@ package com.project.board.board.domain;
 
 import com.project.board.base.BaseEntity;
 import com.project.board.board.dto.BoardSaveForm;
+import com.project.board.board.dto.BoardUpdateForm;
 import com.project.board.member.domain.Member;
 import com.project.board.reply.domain.Reply;
 import lombok.*;
@@ -15,8 +16,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,8 @@ public class Board extends BaseEntity {
     private String title;
     private String content;
     private int groupId;
-    private Long viewCnt;
+    //질문
+    private Long viewCnt=0L;
     @OneToMany(mappedBy = "board")
     private List<Reply>replies=new ArrayList<>();
     @ManyToOne(fetch = FetchType.LAZY)
@@ -47,18 +48,25 @@ public class Board extends BaseEntity {
         replies.add(reply);
         reply.setBoard(this);
     }
-    public static Board save(int groupId,BoardSaveForm saveForm){
-        Board board = new Board();
-        board.title=saveForm.getTitle();
-        board.content=saveForm.getContent();
-        return board;
+    public Board(){
+
+    }
+    public Board(Member member,int groupId,BoardSaveForm saveForm){
+        this.title=saveForm.getTitle();
+        this.content=saveForm.getContent();
+        this.groupId=groupId;
+        this.member=member;
+        member.getBoards().add(this);
+    }
+    public void update(BoardUpdateForm boardUpdateForm){
+        this.content=boardUpdateForm.getContext();
     }
 
-    private String substringTitle(Board b) {
+    public String substringTitle() {
 
         // 만약에 글제목이 5글자 이상이라면
         // 5글자만 보여주고 나머지는 ...처리
-        String title = b.getTitle();
+        String title = this.getTitle();
         if (title.length() > 5) {
             String subStr = title.substring(0, 5);
             return subStr+"...";
@@ -69,11 +77,11 @@ public class Board extends BaseEntity {
     }
     public Boolean checkNewArticle() {
         LocalDateTime newArticleDate = this.getCreatedDate().plusMinutes(5);
-        return LocalDateTime.now().isAfter(newArticleDate);
+        return LocalDateTime.now().isBefore(newArticleDate);
 
     }
-    public void changeDateFormat(){
-        this.getLastModifiedDate().format(DateTimeFormatter.ofPattern("yy-MM-dd"));
+    public void plusViewCnt(){
+         this.viewCnt += 1;
     }
 
 

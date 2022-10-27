@@ -19,10 +19,14 @@ public class Member extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
-    private String account;
-    private String password;
     private String username;
+    private String password;
+
+    private String name;
     private String email;
+    private String role; //ROLE_USER, ROLE_ADMIN
+    private String provider;
+    private String providerId;
     @OneToMany(mappedBy = "member")
     List<Reply>replies=new ArrayList<>();
     @OneToMany(mappedBy = "member")
@@ -35,5 +39,15 @@ public class Member extends BaseTimeEntity {
     public void setReplies(Reply reply) {
         this.replies.add(reply);
         reply.setMember(this);
+    }
+    @Builder
+    public Member(String name, String password, String username, String email, String role, String provider, String providerId) {
+        this.name = name;
+        this.password = password;
+        this.username = username;
+        this.email = email;
+        this.role = role;
+        this.provider = provider;
+        this.providerId = providerId;
     }
 }
