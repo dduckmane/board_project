@@ -27,11 +27,12 @@ public class ReplyRepositoryImpl implements ReplyRepositoryCustom{
     }
 
     @Override
-    public Page<Reply> searchAll(Pageable pageable) {
+    public Page<Reply> searchAll(Long boardId,Pageable pageable) {
         List<Reply> results = queryFactory
                 .selectFrom(reply)
                 .leftJoin(reply.board, board).fetchJoin()
                 .leftJoin(reply.member, member).fetchJoin()
+                .where(board.id.eq(boardId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

@@ -65,7 +65,7 @@ public class BoardController {
 
         Member member = principalDetails.getMember();
 
-        boardService.save(member,1,boardSaveForm);
+        boardService.save(member,1,boardSaveForm.getTitle(),boardSaveForm.getContent());
         return "hello";
     }
     @GetMapping("{boardId}/edit")
@@ -77,7 +77,7 @@ public class BoardController {
         //임의의 updateForm
         BoardUpdateForm boardUpdateForm = new BoardUpdateForm();
         boardUpdateForm.setContext("parar");
-        boardService.update(boardId,boardUpdateForm);
+        boardService.update(boardId,boardUpdateForm.getContext());
         return "update";
     }
     @GetMapping("{boardId}/delete")

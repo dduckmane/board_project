@@ -28,16 +28,16 @@ public class BoardService {
     private final EntityManager em;
 
     @Transactional
-    public void save(Member member, int groupId, BoardSaveForm boardSaveForm){
-        Board saveBoard = new Board(member, groupId, boardSaveForm);
+    public void save(Member member, int groupId, String title,String content){
+        Board saveBoard = Board.write(member, groupId, title, content);
         boardRepository.save(saveBoard);
     }
 
     @Transactional
-    public void update(Long boardId, BoardUpdateForm boardUpdateForm) {
+    public void update(Long boardId, String content) {
         //optional처리 부분 질문
         Board board = boardRepository.findById(boardId).orElseGet(()->new Board());
-        board.update(boardUpdateForm);
+        board.update(content);
     }
     @Transactional
     public void delete(Long boardId){

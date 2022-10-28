@@ -51,15 +51,17 @@ public class Board extends BaseEntity {
     public Board(){
 
     }
-    public Board(Member member,int groupId,BoardSaveForm saveForm){
-        this.title=saveForm.getTitle();
-        this.content=saveForm.getContent();
-        this.groupId=groupId;
-        this.member=member;
-        member.getBoards().add(this);
+    public static Board write(Member member,int groupId,String title,String content){
+        Board board = new Board();
+        board.title=title;
+        board.member=member;
+        board.groupId=groupId;
+        board.content=content;
+        member.getBoards().add(board);
+        return board;
     }
-    public void update(BoardUpdateForm boardUpdateForm){
-        this.content=boardUpdateForm.getContext();
+    public void update(String content){
+        this.content=content;
     }
 
     public String substringTitle() {

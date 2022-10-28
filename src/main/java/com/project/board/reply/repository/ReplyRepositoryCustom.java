@@ -5,5 +5,5 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface ReplyRepositoryCustom {
-    Page<Reply>searchAll(Pageable pageable);
+    Page<Reply>searchAll(Long boardId,Pageable pageable);
 }
