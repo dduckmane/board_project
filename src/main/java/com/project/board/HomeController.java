@@ -93,7 +93,7 @@ public class HomeController {
     @PreAuthorize("hasRole('ROLE_MANAGER')or hasRole('ROLE_USER')")
     @GetMapping("/data")
     public @ResponseBody String data(){
-        return "개인 정보";
+        return "개인 정보입니다.";
     }
 
 
