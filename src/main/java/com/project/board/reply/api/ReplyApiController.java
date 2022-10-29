@@ -2,6 +2,7 @@ package com.project.board.reply.api;
 
 import com.project.board.config.auth.PrincipalDetails;
 import com.project.board.member.domain.Member;
+import com.project.board.reply.dto.ListDto;
 import com.project.board.reply.dto.ReplyDto;
 import com.project.board.reply.dto.ReplySaveDto;
 import com.project.board.reply.dto.ReplyUpdateDto;
@@ -27,15 +28,15 @@ public class ReplyApiController {
     private final ReplyRepository replyRepository;
 
     @GetMapping("/list/{boardId}")
-    public List<ReplyDto> list(@PathVariable Long boardId,@PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
+    public ListDto list(@PathVariable Long boardId,@PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
         Page<ReplyDto> results = replyRepository.searchAll(boardId, pageable).map(ReplyDto::new);
 
         int nowPage = results.getPageable().getPageNumber() + 1;
         int startPage = Math.max(nowPage - 4, 1);
         int endPage = Math.min(nowPage + 5, results.getTotalPages());
 
-        List<ReplyDto> content = results.getContent();
-        return content;
+        ListDto listDto = new ListDto(nowPage, endPage, startPage,results);
+        return listDto;
     }
     @PostMapping("/{boardId}")
     public String save(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long boardId,@RequestBody ReplySaveDto replySaveDto){

@@ -61,7 +61,7 @@
 
     <div class="content-container">
 
-        <h1 class="main-title">${b.boardNo}번 게시물</h1>
+        <h1 class="main-title">${BoardDtoList.id}번 게시물</h1>
 
         <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">작성자</label>
@@ -215,11 +215,11 @@
 <!-- 댓글관련 script -->
 <script>
     //원본 글 번호
-    const bno = '${b.boardNo}';
-    // console.log('bno:', bno);
+    const bno = '${boardDetailsDto.id}';
+    console.log('bno:', bno);
 
     // 댓글 요청 URL
-    const URL = '/api/v1/replies';
+    const URL = '/api/reply';
 
     //날짜 포맷 변환 함수
     function formatDate(datetime) {
@@ -258,19 +258,19 @@
 
 
     // 댓글 페이지 태그 생성 렌더링 함수
-    function makePageDOM(pageInfo) {
+    function makePageDOM(nowPage,endPage,startPage,pageable) {
         let tag = "";
-        const begin = pageInfo.beginPage;
-        const end = pageInfo.endPage;
+        const begin = startPage;
+        const end = endPage;
         //이전 버튼 만들기
-        if (pageInfo.prev) {
+        if (!pageable.first) {
             tag += "<li class='page-item'><a class='page-link page-active' href='" + (begin - 1) +
                 "'>이전</a></li>";
         }
         //페이지 번호 리스트 만들기
         for (let i = begin; i <= end; i++) {
             let active = '';
-            if (pageInfo.page.pageNum === i) {
+            if (nowPage === i) {
                 active = 'p-active';
             }
 
@@ -278,7 +278,7 @@
                 "'>" + i + "</a></li>";
         }
         //다음 버튼 만들기
-        if (pageInfo.next) {
+        if (!pageable.last) {
             tag += "<li class='page-item'><a class='page-link page-active' href='" + (end + 1) +
                 "'>다음</a></li>";
         }
@@ -288,36 +288,39 @@
         $pageUl.innerHTML = tag;
 
         // ul에 마지막페이지 번호 저장.
-        $pageUl.dataset.fp = pageInfo.finalPage;
+        $pageUl.dataset.fp = endPage;
 
 
     }
 
 
     // 댓글 목록 DOM을 생성하는 함수
-    function makeReplyDOM({
-                              replyList,
-                              count,
-                              maker
-                          }) {
+    function makeReplyDOM(listDto) {
+        console.log(listDto);
+        let nowPage = listDto.nowPage;
+        let endPage = listDto.endPage;
+        let startPage = listDto.startPage;
+        let content = listDto.results.content;
+        let pageable = listDto.pageable;
+
         // 각 댓글 하나의 태그
         let tag = '';
 
-        if (replyList === null || replyList.length === 0) {
+        if (content === null || content.length === 0) {
             tag += "<div id='replyContent' class='card-body'>댓글이 아직 없습니다! ㅠㅠ</div>";
 
         } else {
-            for (let rep of replyList) {
-                tag += "<div id='replyContent' class='card-body' data-replyId='" + rep.replyNo + "'>" +
+            for (let replyDto of content) {
+                tag += "<div id='replyContent' class='card-body' data-replyId='" + replyDto.id+ "'>" +
                     "    <div class='row user-block'>" +
                     "       <span class='col-md-3'>" +
-                    "         <b>" + rep.replyWriter + "</b>" +
+                    "         <b>" + replyDto.replyWriter + "</b>" +
                     "       </span>" +
-                    "       <span class='offset-md-6 col-md-3 text-right'><b>" + formatDate(rep.replyDate) +
+                    "       <span class='offset-md-6 col-md-3 text-right'><b>" + formatDate(replyDto.createDate) +
                     "</b></span>" +
                     "    </div><br>" +
                     "    <div class='row'>" +
-                    "       <div class='col-md-6'>" + rep.replyText + "</div>" +
+                    "       <div class='col-md-6'>" + replyDto.replyText + "</div>" +
                     "       <div class='offset-md-2 col-md-4 text-right'>" +
                     "         <a id='replyModBtn' class='btn btn-sm btn-outline-dark' data-bs-toggle='modal' data-bs-target='#replyModifyModal'>수정</a>&nbsp;" +
                     "         <a id='replyDelBtn' class='btn btn-sm btn-outline-dark' href='#'>삭제</a>" +
@@ -331,10 +334,10 @@
         document.getElementById('replyData').innerHTML = tag;
 
         // 댓글 수 배치
-        document.getElementById('replyCnt').textContent = count;
+        document.getElementById('replyCnt').textContent = pageable.totalPages;
 
         // 페이지 렌더링
-        makePageDOM(maker);
+        makePageDOM(nowPage,endPage,startPage,pageable);
 
 
 
@@ -343,11 +346,11 @@
     // 댓글 목록을 서버로부터 비동기요청으로 불러오는 함수
     function showReplies(pageNum = 1) {
 
-        fetch(URL + '?boardNo=' + bno + '&pageNum=' + pageNum)
+        fetch(URL + "/list/" + bno + '?page=' + pageNum)
             .then(res => res.json())
-            .then(replyMap => {
+            .then(listDto => {
                 // console.log(replyMap.replyList);
-                makeReplyDOM(replyMap);
+                makeReplyDOM(listDto);
             });
     }
 

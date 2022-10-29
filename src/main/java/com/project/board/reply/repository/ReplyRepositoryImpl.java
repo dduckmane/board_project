@@ -41,4 +41,12 @@ public class ReplyRepositoryImpl implements ReplyRepositoryCustom{
                 .from(reply);
         return PageableExecutionUtils.getPage(results,pageable,CountQuery::fetchOne);
     }
+
+    @Override
+    public Long getTotalCount() {
+        Long totalCount = queryFactory
+                .select(reply.count())
+                .from(reply).fetchOne();
+        return totalCount;
+    }
 }

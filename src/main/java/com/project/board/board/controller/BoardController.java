@@ -40,6 +40,7 @@ public class BoardController {
         int nowPage = result.getPageable().getPageNumber() + 1;
         int startPage = Math.max(nowPage - 4, 1);
         int endPage = Math.min(nowPage + 5, result.getTotalPages());
+
         List<BoardDto> content = result.getContent();
         model.addAttribute("BoardDtoList",content);
         return "board/board-list";

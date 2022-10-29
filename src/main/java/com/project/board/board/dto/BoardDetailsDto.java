@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 
 @Data
 public class BoardDetailsDto {
+    private Long id;
     private String title;
     private String content;
     private Long viewCnt;
@@ -20,6 +21,7 @@ public class BoardDetailsDto {
     }
 
     public BoardDetailsDto(Board board) {
+        this.id=board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
         this.viewCnt = board.getViewCnt();

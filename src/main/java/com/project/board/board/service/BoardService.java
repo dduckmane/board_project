@@ -36,7 +36,7 @@ public class BoardService {
     @Transactional
     public void update(Long boardId, String content) {
         //optional처리 부분 질문
-        Board board = boardRepository.findById(boardId).orElseGet(()->new Board());
+        Board board = boardRepository.findById(boardId).orElseGet(null);
         board.update(content);
     }
     @Transactional
