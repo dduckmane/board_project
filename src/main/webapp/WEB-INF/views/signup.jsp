@@ -1,3 +1,5 @@
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -12,7 +14,7 @@
 <body>
   <!--   1-->
   <h1>
-    <a href="index.html">🍴Matjip</a>
+    <a href="index.jsp">🍴Matjip</a>
   </h1>
 
   <form action="" style="border:1px solid #ccc">

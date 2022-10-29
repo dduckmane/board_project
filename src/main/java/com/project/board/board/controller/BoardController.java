@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -23,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/user/board")
 @RequiredArgsConstructor
 public class BoardController {
@@ -31,59 +33,51 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping("/{groupId}/list")
-    public List<BoardDto> main(@PathVariable int groupId, BoardSearchCondition searchCondition,
-                               @PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.DESC)Pageable pageable){
+    public String main(@PathVariable int groupId, BoardSearchCondition searchCondition,
+                               @PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.DESC)Pageable pageable, Model model){
         Page<BoardDto> result = boardRepository.searchAllCondition(groupId, searchCondition, pageable).map(BoardDto::new);
 
         int nowPage = result.getPageable().getPageNumber() + 1;
         int startPage = Math.max(nowPage - 4, 1);
         int endPage = Math.min(nowPage + 5, result.getTotalPages());
         List<BoardDto> content = result.getContent();
-
-        return content;
+        model.addAttribute("BoardDtoList",content);
+        return "board/board-list";
     }
     @GetMapping("/{boardId}")
-    public BoardDetailsDto board(@PathVariable Long boardId, HttpServletResponse response, HttpServletRequest request){
+    public String board(@PathVariable Long boardId, HttpServletResponse response, HttpServletRequest request,Model model){
         BoardDetailsDto boardDetailsDto = boardService
                 .findOne(boardId, response, request)
                 .map(BoardDetailsDto::new).orElseGet(() -> new BoardDetailsDto());
-        return boardDetailsDto;
+        model.addAttribute("boardDetailsDto",boardDetailsDto);
+        return "board/board-detail";
     }
     @GetMapping("/save")
     public String saveForm(){
-        return "saveForm";
+        return "board/board-write";
     }
 
     @PostMapping("/save")
-    public String save(@AuthenticationPrincipal PrincipalDetails principalDetails, RedirectAttributes redirectAttributes){
-
-        //임의 saveFORM을 만듦
-        BoardSaveForm boardSaveForm = new BoardSaveForm();
-        boardSaveForm.setContent("prac");
-        boardSaveForm.setTitle("title");
-        //임의 saveFORM을 만듦
+    public String save(@AuthenticationPrincipal PrincipalDetails principalDetails, @ModelAttribute BoardSaveForm boardSaveForm,RedirectAttributes redirectAttributes){
 
         Member member = principalDetails.getMember();
-
         boardService.save(member,1,boardSaveForm.getTitle(),boardSaveForm.getContent());
-        return "hello";
+        return "redirect: board/board-detail";
     }
     @GetMapping("{boardId}/edit")
-    public String editForm(){
-        return "editForm";
+    public String editForm(@ModelAttribute BoardSaveForm boardSaveForm)
+    {
+        return "board/board-modify";
     }
     @PostMapping("{boardId}/edit")
-    public String edit(@AuthenticationPrincipal PrincipalDetails principalDetails,@PathVariable Long boardId){
-        //임의의 updateForm
-        BoardUpdateForm boardUpdateForm = new BoardUpdateForm();
-        boardUpdateForm.setContext("parar");
+    public String edit(@AuthenticationPrincipal PrincipalDetails principalDetails,@PathVariable Long boardId,@ModelAttribute BoardUpdateForm boardUpdateForm,RedirectAttributes redirectAttributes){
         boardService.update(boardId,boardUpdateForm.getContext());
-        return "update";
+        return "redirect: board/board-detail";
     }
     @GetMapping("{boardId}/delete")
     //물어보기 외래키 제약조건??
-    public String delete(@PathVariable Long boardId){
+    public String delete(@PathVariable Long boardId,RedirectAttributes redirectAttributes){
         boardService.delete(boardId);
-        return "delete";
+        return "redirect: /";
     }
 }

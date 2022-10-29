@@ -1,3 +1,5 @@
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -14,7 +16,7 @@
   <header class="header-wrap clearfix">
     <div class="container">
       <h1>
-        <a href="index.html">🍴Matjip</a>
+        <a href="index.jsp">🍴Matjip</a>
       </h1>
       <div class="serch">
         <input type="text" class="serch_input" placeholder="지역, 식당 또는 음식">
@@ -27,8 +29,8 @@
           </a>
         </div>
         <div class="tnb-menu">
-          <a href="login.html">로그인</a>
-          <a href="signup.html">회원가입</a>
+          <a href="login.jsp">로그인</a>
+          <a href="signup.jsp">회원가입</a>
         </div>
       </nav>
     </div>
