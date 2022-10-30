@@ -32,8 +32,8 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "member")
     List<Board>boards=new ArrayList<>();
 
-    public Member(String username){
-        this.username=username;
+    public Member(String name){
+        this.name=name;
     }
     public Member(){}
 

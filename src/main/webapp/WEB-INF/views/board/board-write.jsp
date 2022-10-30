@@ -7,8 +7,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Matjip</title>
-  <link rel="stylesheet" href="CSS/common.css">
-  <link rel="stylesheet" href="CSS/board.css">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/board.css">
 <!--  WYSIWYG edtier -->
   <script src="https://cdn.ckeditor.com/ckeditor5/35.2.0/classic/ckeditor.js"></script>
   <script src="https://cdn.ckeditor.com/ckeditor5/35.2.1/inline/ckeditor.js"></script>

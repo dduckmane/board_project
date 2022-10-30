@@ -63,31 +63,6 @@
 
         <h1 class="main-title">${BoardDtoList.id}번 게시물</h1>
 
-        <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">작성자</label>
-            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="이름" name="writer"
-                   value="${b.writer}" disabled>
-        </div>
-        <div class="mb-3">
-            <label for="exampleFormControlInput2" class="form-label">글제목</label>
-            <input type="text" class="form-control" id="exampleFormControlInput2" placeholder="제목" name="title"
-                   value="${b.title}" disabled>
-        </div>
-        <div class="mb-3">
-            <label for="exampleFormControlTextarea1" class="form-label">내용</label>
-
-            <p class="main-content">
-                ${b.content}
-
-            </p>
-
-        </div>
-
-        <div class="btn-group btn-group-lg custom-btn-group" role="group">
-            <button id="mod-btn" type="button" class="btn btn-warning">수정</button>
-            <button id="del-btn" type="button" class="btn btn-danger">삭제</button>
-            <button id="list-btn" type="button" class="btn btn-dark">목록</button>
-        </div>
 
         <!-- 댓글 영역 -->
 
@@ -188,28 +163,7 @@
 </div>
 
 
-<!-- 게시글 상세보기 관련 script -->
-<script>
-    const [$modBtn, $delBtn, $listBtn] = [...document.querySelector('div[role=group]').children];
 
-    // const $modBtn = document.getElementById('mod-btn');
-    //수정버튼
-    $modBtn.onclick = e => {
-        location.href = '/board/modify?boardNo=${b.boardNo}';
-    };
-
-    //삭제버튼
-    $delBtn.onclick = e => {
-        if (!confirm('정말 삭제하시겠습니까?')) {
-            return;
-        }
-        location.href = '/board/delete?boardNo=${b.boardNo}';
-    };
-    //목록버튼
-    $listBtn.onclick = e => {
-        location.href = '/board/list?pageNum=${p.pageNum}&amount=${p.amount}';
-    };
-</script>
 
 
 <!-- 댓글관련 script -->
@@ -258,12 +212,12 @@
 
 
     // 댓글 페이지 태그 생성 렌더링 함수
-    function makePageDOM(nowPage,endPage,startPage,pageable) {
+    function makePageDOM(nowPage,endPage,startPage,first,last,totalPages) {
         let tag = "";
         const begin = startPage;
         const end = endPage;
         //이전 버튼 만들기
-        if (!pageable.first) {
+        if (!first) {
             tag += "<li class='page-item'><a class='page-link page-active' href='" + (begin - 1) +
                 "'>이전</a></li>";
         }
@@ -278,7 +232,7 @@
                 "'>" + i + "</a></li>";
         }
         //다음 버튼 만들기
-        if (!pageable.last) {
+        if (!last) {
             tag += "<li class='page-item'><a class='page-link page-active' href='" + (end + 1) +
                 "'>다음</a></li>";
         }
@@ -288,7 +242,7 @@
         $pageUl.innerHTML = tag;
 
         // ul에 마지막페이지 번호 저장.
-        $pageUl.dataset.fp = endPage;
+        $pageUl.dataset.fp = totalPages;
 
 
     }
@@ -301,7 +255,11 @@
         let endPage = listDto.endPage;
         let startPage = listDto.startPage;
         let content = listDto.results.content;
-        let pageable = listDto.pageable;
+        let results = listDto.results;
+        let totalElements = results.totalElements;
+
+        let last = results.last;
+        let first = results.first;
 
         // 각 댓글 하나의 태그
         let tag = '';
@@ -316,7 +274,7 @@
                     "       <span class='col-md-3'>" +
                     "         <b>" + replyDto.replyWriter + "</b>" +
                     "       </span>" +
-                    "       <span class='offset-md-6 col-md-3 text-right'><b>" + formatDate(replyDto.createDate) +
+                    "       <span class='offset-md-6 col-md-3 text-right'><b>" + replyDto.createDate +
                     "</b></span>" +
                     "    </div><br>" +
                     "    <div class='row'>" +
@@ -334,10 +292,10 @@
         document.getElementById('replyData').innerHTML = tag;
 
         // 댓글 수 배치
-        document.getElementById('replyCnt').textContent = pageable.totalPages;
+        document.getElementById('replyCnt').textContent = results.totalElements;;
 
         // 페이지 렌더링
-        makePageDOM(nowPage,endPage,startPage,pageable);
+        makePageDOM(nowPage,endPage,startPage,first,last,results.totalPages);
 
 
 
@@ -346,10 +304,9 @@
     // 댓글 목록을 서버로부터 비동기요청으로 불러오는 함수
     function showReplies(pageNum = 1) {
 
-        fetch(URL + "/list/" + bno + '?page=' + pageNum)
+        fetch(URL + "/list/" + bno + '?page=' + (pageNum-1))
             .then(res => res.json())
             .then(listDto => {
-                // console.log(replyMap.replyList);
                 makeReplyDOM(listDto);
             });
     }

@@ -12,9 +12,12 @@ public class ReplyDto {
     private String createDate;
 
     public ReplyDto(Reply reply) {
+        System.out.println("reply.getMember().getId() = " + reply.getMember().getId());
+        System.out.println("reply.getMember().getName() = " + reply.getMember().getName());
         this.id=reply.getId();
         this.replyText = reply.getReplyText();
         this.replyWriter = reply.getMember().getName();//이거 나중에 수정--> 시큐리티로 이용
+        System.out.println("replyWriter = " + replyWriter);
         this.createDate = reply.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
     }
 }
