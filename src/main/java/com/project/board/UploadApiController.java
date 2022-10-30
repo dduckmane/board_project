@@ -21,7 +21,7 @@ public class UploadApiController {
     @PostMapping("/upload")
     public String upload(@RequestParam("food_content") String food_content, Model model){
         model.addAttribute("content",food_content);
-        return "/WEB-INF/views/board/board-detail.jsp";
+        return "board/board-detail";
     }
 
     // 이미지 업로드

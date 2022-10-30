@@ -50,7 +50,7 @@ public class BoardController {
                 .findOne(boardId, response, request)
                 .map(BoardDetailsDto::new).orElseGet(() -> new BoardDetailsDto());
         model.addAttribute("boardDetailsDto",boardDetailsDto);
-        return "/WEB-INF/views/board/board-detail.jsp";
+        return "board/board-detail";
     }
     @GetMapping("/save")
     public String saveForm(){
