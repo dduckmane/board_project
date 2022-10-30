@@ -48,141 +48,32 @@
     </div>
   </div>
 </div>
+<h2><a href="http://localhost:8080/user/board/save/${groupId}">글쓰기</a></h2>
+
+
 
 <!--맛집 리스트-->
 <div class="list-wrap">
   <ul class="list">
-    <li>
+    <c:forEach var="item" items="${BoardDtoList}">
+      <li>
         <div class="list-box">
-        <div class="thumb">
-          <a href="#"><img src="img/food01.png" alt=""></a>
+          <div class="text-box">
+            <a href="http://localhost:8080/user/board/${(item.id)}">  id: ${item.id} 제목: ${item.subTitle} 조회수: ${item.viewCnt} 작성자:  ${item.name} 신규글:  ${item.newArticle} </a>
+          </div>
         </div>
-        <div class="text-box">
-          <h2>1. ㅇㅇㅇㅇㅇ</h2>
-          <h3>주소:ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</h3>
-          <p></p>
-          <a href="#">더보기</a>
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="list-box">
-        <div class="thumb">
-          <a href="#"><img src="img/food01.png" alt=""></a>
-        </div>
-        <div class="text-box">
-          <h2>2. ㅇㅇㅇㅇㅇ</h2>
-          <h3>주소:ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</h3>
-          <p></p>
-          <a href="#">더보기</a>
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="list-box">
-        <div class="thumb">
-          <a href="#"><img src="img/food01.png" alt=""></a>
-        </div>
-        <div class="text-box">
-          <h2>3. ㅇㅇㅇㅇㅇ</h2>
-          <h3>주소:ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</h3>
-          <p></p>
-          <a href="#">더보기</a>
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="list-box">
-        <div class="thumb">
-          <a href="#"><img src="img/food01.png" alt=""></a>
-        </div>
-        <div class="text-box">
-          <h2>4. ㅇㅇㅇㅇㅇ</h2>
-          <h3>주소:ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</h3>
-          <p></p>
-          <a href="#">더보기</a>
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="list-box">
-        <div class="thumb">
-          <a href="#"><img src="img/food01.png" alt=""></a>
-        </div>
-        <div class="text-box">
-          <h2>5. ㅇㅇㅇㅇㅇ</h2>
-          <h3>주소:ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</h3>
-          <p></p>
-          <a href="#">더보기</a>
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="list-box">
-        <div class="thumb">
-          <a href="#"><img src="img/food01.png" alt=""></a>
-        </div>
-        <div class="text-box">
-          <h2>6. ㅇㅇㅇㅇㅇ</h2>
-          <h3>주소:ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</h3>
-          <p></p>
-          <a href="#">더보기</a>
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="list-box">
-        <div class="thumb">
-          <a href="#"><img src="img/food01.png" alt=""></a>
-        </div>
-        <div class="text-box">
-          <h2>7. ㅇㅇㅇㅇㅇ</h2>
-          <h3>주소:ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</h3>
-          <p></p>
-          <a href="#">더보기</a>
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="list-box">
-        <div class="thumb">
-          <a href="#"><img src="img/food01.png" alt=""></a>
-        </div>
-        <div class="text-box">
-          <h2>8. ㅇㅇㅇㅇㅇ</h2>
-          <h3>주소:ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</h3>
-          <p></p>
-          <a href="#">더보기</a>
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="list-box">
-        <div class="thumb">
-          <a href="#"><img src="img/food01.png" alt=""></a>
-        </div>
-        <div class="text-box">
-          <h2>9. ㅇㅇㅇㅇㅇ</h2>
-          <h3>주소:ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</h3>
-          <p></p>
-          <a href="#">더보기</a>
-        </div>
-      </div>
-    </li>
-    <li>
-      <div class="list-box">
-        <div class="thumb">
-          <a href="#"><img src="img/food01.png" alt=""></a>
-        </div>
-        <div class="text-box">
-          <h2>10. ㅇㅇㅇㅇㅇ</h2>
-          <h3>주소:ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</h3>
-          <p></p>
-          <a href="#">더보기</a>
-        </div>
-      </div>
-    </li>
+      </li>
+    </c:forEach>
+
   </ul>
+<%--  누님 페이징 부탁해용 이 6가지 정보로 페이징을 충분히 하실꺼라 밑어요--%>
+  ${pageMaker.startPage}
+  ${pageMaker.endPage}
+  ${pageMaker.nowPage}
+  ${pageMaker.first}
+  ${pageMaker.last}
+  ${pageMaker.totalPages}
+
 </div>
 
 <!--footer-->

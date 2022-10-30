@@ -27,7 +27,7 @@ public class Board extends BaseEntity {
     private int groupId;
     //질문
     private Long viewCnt=0L;
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board",orphanRemoval = true)
     private List<Reply>replies=new ArrayList<>();
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

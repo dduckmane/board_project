@@ -61,15 +61,15 @@
 
     <div class="content-container">
 
-        <h1 class="main-title">${BoardDtoList.id}번 게시물</h1>
-
+        <h1 class="main-title">${boardDetailsDto.id}번 게시물</h1>
+        <h2><a href="http://localhost:8080/user/board/edit/${boardDetailsDto.id}">수정버튼</a></h2>
+        <h2><a href="http://localhost:8080/user/board/delete/${boardDetailsDto.id}">삭제버튼</a></h2>
 
         <div class="text-area">
             <div>
-            content
+                ${boardDetailsDto.content}
             </div>
         </div>
-
         <!-- 댓글 영역 -->
 
         <div id="replies" class="row">

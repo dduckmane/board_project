@@ -17,13 +17,6 @@ import java.util.UUID;
 public class UploadApiController {
 
 
-
-    @PostMapping("/upload")
-    public String upload(@RequestParam("food_content") String food_content, Model model){
-        model.addAttribute("content",food_content);
-        return "board/board-detail";
-    }
-
     // 이미지 업로드
     @RequestMapping(value="food/imageUpload.do", method = RequestMethod.POST)
     public void imageUpload(HttpServletRequest request,

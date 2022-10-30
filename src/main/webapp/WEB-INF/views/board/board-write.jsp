@@ -13,10 +13,11 @@
 </head>
 <body>
 
-<form action="/user/board/save" method="post">
+<form action="/user/board/save/${groupId}" method="post">
      제목: <input type="text" name="title">
     <textarea id="content" name="content"></textarea>
   <input type="submit" value="글등록">
+    <input type="hidden" name="groupId" value="${groupId}">
 </form>
 
     <script type="text/javascript">	// 글쓰기 editor 및 사진 업로드 기능

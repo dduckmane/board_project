@@ -64,6 +64,9 @@
           </div>
         </div>
       </div>
+      <p>일단 임시로 2개만 만들었어요 그냥 테스트용이어서 지우세요</p>
+      <h1><a href="http://localhost:8080/user/board/list/1">맛집리스트 1</a></h1>
+      <h1><a href="http://localhost:8080/user/board/list/2">맛집리스트 2</a></h1>
       <div class="area">
         <div class="area-top cf">
          <h2>지역별 맛집</h2>

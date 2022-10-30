@@ -31,8 +31,8 @@ public class InitBoard {
         public void init(){
             int one=1;
             int two=2;
-            for (int i = 1; i <= 4; i++) {
-                int selected=i%2==0? one:two;
+            for (int i = 1; i <= 26; i++) {
+                int selected=i%2==0? two:one;
                 String username = String.valueOf((int) ((Math.random() * 10000) % 10));
                 Board board = new Board(String.valueOf(i));
                 Member member = new Member(username);
@@ -47,7 +47,7 @@ public class InitBoard {
                 em.persist(member);
                 em.persist(board);
             }
-            for (int i = 1; i <=30 ; i++) {
+            for (int i = 1; i <=16 ; i++) {
                 Reply reply = new Reply(String.valueOf((int) ((Math.random() * 10000) % 10)));
                 em.persist(reply);
                 Member member = new Member("홍길동");

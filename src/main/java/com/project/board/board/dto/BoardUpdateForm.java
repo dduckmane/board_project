@@ -1,8 +1,20 @@
 package com.project.board.board.dto;
 
+import com.project.board.board.domain.Board;
 import lombok.Data;
 
 @Data
 public class BoardUpdateForm {
-    private String context;
+    private Long id;
+    private String title;
+    private String content;
+
+    public BoardUpdateForm() {
+    }
+
+    public BoardUpdateForm(Board board) {
+        this.id=board.getId();
+        this.title = board.getTitle();
+        this.content = board.getContent();
+    }
 }
