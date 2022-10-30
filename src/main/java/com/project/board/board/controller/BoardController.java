@@ -11,6 +11,7 @@ import com.project.board.board.service.BoardService;
 import com.project.board.config.auth.PrincipalDetails;
 import com.project.board.member.domain.Member;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,6 +29,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/user/board")
 @RequiredArgsConstructor
+@Log4j2
 public class BoardController {
     private final BoardRepository boardRepository;
     private final BoardService boardService;
@@ -60,10 +62,10 @@ public class BoardController {
 
     @PostMapping("/save")
     public String save(@AuthenticationPrincipal PrincipalDetails principalDetails, @ModelAttribute BoardSaveForm boardSaveForm,RedirectAttributes redirectAttributes){
-
+        log.info("/user/board/save POST");
         Member member = principalDetails.getMember();
         boardService.save(member,1,boardSaveForm.getTitle(),boardSaveForm.getContent());
-        return "redirect: board/board-detail";
+        return "redirect:/user/board/1/list";
     }
     @GetMapping("{boardId}/edit")
     public String editForm(@ModelAttribute BoardSaveForm boardSaveForm)
