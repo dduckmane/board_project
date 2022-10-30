@@ -9,72 +9,23 @@
   <title>Matjip</title>
   <link rel="stylesheet" href="/css/common.css">
   <link rel="stylesheet" href="/css/board.css">
-<!--  WYSIWYG edtier -->
-  <script src="https://cdn.ckeditor.com/ckeditor5/35.2.0/classic/ckeditor.js"></script>
-  <script src="https://cdn.ckeditor.com/ckeditor5/35.2.1/inline/ckeditor.js"></script>
-  <script src="https://cdn.ckeditor.com/ckeditor5/35.2.1/balloon/ckeditor.js"></script>
-
-
 </head>
 <body>
-<!--헤더 -->
-<header class="header-wrap clearfix">
-  <div class="container">
-    <h1>
-      <a href="index.html">🍴Matjip</a>
-    </h1>
-    <div class="serch">
-      <input type="text" class="serch_input" placeholder="지역, 식당 또는 음식">
-      <button class="serch_button">검색</button>
-    </div>
-    <nav class="tnb">
-      <div class="menu-btn">
-        <a href="#">
-          <img src="img/menu-btn.png" alt="">
-        </a>
-      </div>
-      <div class="tnb-menu">
-        <a href="#">로그인</a>
-        <a href="#">회원가입</a>
-      </div>
-    </nav>
-  </div>
-</header>
 
-<!--글쓰기 공간-->
-<div id="board-write-wrap">
-      <h1>리뷰를 작성해주세요</h1>
-      <div id="editor">
-        <p>This is some sample content.</p>
-      </div>
-      <script>
-        ClassicEditor
-                .create( document.querySelector( '#editor' ) )
-                .catch( error => {
-                  console.error( error );
-                } );
-
-        InlineEditor
-                .create( document.querySelector( '#editor' ) )
-                .catch( error => {
-                  console.error( error );
-                } );
-
-        BalloonEditor
-                .create( document.querySelector( '#editor' ) )
-                .catch( error => {
-                  console.error( error );
-                } );
-      </script>
-  <input type="submit" value="글등록">
+<div class="mb-3" style="width: 50%; margin: 0 auto;">
+  <label for="exampleFormControlTextarea1" class="form-label">News Content</label>
+  <textarea class="form-control " name="freeboard_content" id="ckeditor" name="ckeditor" rows="6"></textarea>
 </div>
+<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
 
-<!--footer-->
-<footer>
-  <address>
-    &copy; foot
-  </address>
-</footer>
-
+<script>
+  CKEDITOR.replace('ckeditor', {  //해당 이름으로 된 textarea에 에디터를 적용
+    width: '100%',
+    height: '400px',
+    filebrowserUploadUrl: "/upload"
+  });
+</script>
+<input type="submit" value="글등록">
 </body>
+
 </html>
