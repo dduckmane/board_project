@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -19,6 +20,11 @@ public class BoardApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BoardApplication.class, args);
+	}
+
+	@Bean
+	public CommonsMultipartResolver commonsMultipartResolver(){
+		return new CommonsMultipartResolver();
 	}
 
 }

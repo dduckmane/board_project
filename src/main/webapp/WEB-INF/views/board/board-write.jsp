@@ -9,23 +9,22 @@
   <title>Matjip</title>
   <link rel="stylesheet" href="/css/common.css">
   <link rel="stylesheet" href="/css/board.css">
+  <script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
 </head>
 <body>
 
-<div class="mb-3" style="width: 50%; margin: 0 auto;">
-  <label for="exampleFormControlTextarea1" class="form-label">News Content</label>
-  <textarea class="form-control " name="freeboard_content" id="ckeditor" name="ckeditor" rows="6"></textarea>
-</div>
-<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
+<form action="/user/board/save" method="post">
+     제목: <input type="text" name="title">
+    <textarea id="content" name="content"></textarea>
+  <input type="submit" value="글등록">
+</form>
 
-<script>
-  CKEDITOR.replace('ckeditor', {  //해당 이름으로 된 textarea에 에디터를 적용
-    width: '100%',
-    height: '400px',
-    filebrowserUploadUrl: "/upload"
-  });
-</script>
-<input type="submit" value="글등록">
+    <script type="text/javascript">	// 글쓰기 editor 및 사진 업로드 기능
+    CKEDITOR.replace('content',
+            {
+              filebrowserUploadUrl:'/food/imageUpload.do'
+            });
+    </script>
 </body>
 
 </html>

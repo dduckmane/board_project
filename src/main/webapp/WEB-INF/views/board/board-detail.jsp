@@ -64,6 +64,15 @@
         <h1 class="main-title">${BoardDtoList.id}번 게시물</h1>
 
 
+        <div>
+            <div>
+
+            </div>
+            <div>
+            content
+            </div>
+        </div>
+
         <!-- 댓글 영역 -->
 
         <div id="replies" class="row">

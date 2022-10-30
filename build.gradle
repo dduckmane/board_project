@@ -53,10 +53,13 @@ dependencies {
 	implementation 'com.google.code.gson:gson:2.10'
 	// https://mvnrepository.com/artifact/org.webjars/ckeditor
 	implementation group: 'org.webjars', name: 'ckeditor', version: '31.0.0'
-	// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
 	implementation 'org.apache.commons:commons-lang3:3.12.0'
-	// https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
+// https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
 	implementation 'commons-fileupload:commons-fileupload:1.4'
+	// https://mvnrepository.com/artifact/commons-io/commons-io
+	implementation 'commons-io:commons-io:2.6'
+
 
 
 	//테스트에서 lombok 사용

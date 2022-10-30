@@ -75,6 +75,31 @@ public class FileUtils {
 
         return responseFilePath.replace("\\", "/");
     }
+    public static String uploadFileFull(MultipartFile file, String uploadPath) {
+
+        // 중복이 없는 파일명으로 변경하기
+        // ex) 상어.png -> 3dfsfjkdsfds-djksfaqwerij-dsjkfdkj_상어.png
+        String newFileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+
+        // 업로드 경로를 변경
+        // E:/sl_dev/upload  ->  E:/sl_dev/upload/2022/08/01
+        String newUploadPath = getNewUploadPath(uploadPath);
+
+        // 파일 업로드 수행
+        File f = new File(newUploadPath, newFileName);
+
+        try {
+            file.transferTo(f);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // 파일의 풀 경로 (디렉토리경로 + 파일명)
+        String fileFullPath = newUploadPath + File.separator + newFileName;
+
+
+        return fileFullPath.replace("\\", "/");
+    }
 
     /**
      * 원본 업로드 경로를 받아서 일자별 폴더를 생성 한 후 최종경로를 리턴

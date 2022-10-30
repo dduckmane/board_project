@@ -72,6 +72,8 @@ public class BoardController {
     }
     @PostMapping("{boardId}/edit")
     public String edit(@AuthenticationPrincipal PrincipalDetails principalDetails,@PathVariable Long boardId,@ModelAttribute BoardUpdateForm boardUpdateForm,RedirectAttributes redirectAttributes){
+        //들어온 사람이 boardId를 작성하기 않았으면 돌려보내줘야하는 코드를 서버에서도 알려줘야하고
+        //클라이언트로도 true와 false를 넘겨줘야한다.
         boardService.update(boardId,boardUpdateForm.getContext());
         return "redirect: board/board-detail";
     }
