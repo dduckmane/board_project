@@ -2,33 +2,27 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!-- header -->
-<header>
-    <div class="inner-header">
-        <h1 class="logo">
-            <a href="#">
-                <img src="/img/logo.png" alt="로고이미지">
-            </a>
+<header class="header-wrap">
+    <div class="container">
+        <h1>
+            <a href="index.jsp">🍴Matjip</a>
         </h1>
-        <h2 class="intro-text">Welcome</h2>
-        <a href="#" class="menu-open">
-            <span class="menu-txt">MENU</span>
-            <span class="lnr lnr-menu"></span>
-        </a>
+        <div class="serch">
+            <input type="text" class="serch_input" placeholder="지역, 식당 또는 음식">
+            <button class="serch_button">검색</button>
+        </div>
+        <nav class="tnb">
+            <div class="menu-btn">
+                <a href="#">
+                    <img src="img/menu-btn.png" alt="">
+                </a>
+            </div>
+            <div class="tnb-menu">
+                <a href="login.jsp">로그인</a>
+                <a href="signup.jsp">회원가입</a>
+            </div>
+        </nav>
     </div>
-
-    <nav class="gnb">
-        <a href="#" class="close">
-            <span class="lnr lnr-cross"></span>
-        </a>
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="/board/list">Board</a></li>
-            <li><a href="#">Contact</a></li>
-            <li><a href="#">JOIN</a></li>
-            <li><a href="#">Favorite</a></li>
-        </ul>
-    </nav>
 
 </header>
 <!-- //header -->

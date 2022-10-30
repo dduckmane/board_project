@@ -1,6 +1,5 @@
 package com.project.board.board.controller;
 
-import com.project.board.board.domain.Board;
 import com.project.board.board.dto.BoardDetailsDto;
 import com.project.board.board.dto.BoardDto;
 import com.project.board.board.dto.BoardSaveForm;
@@ -51,7 +50,7 @@ public class BoardController {
                 .findOne(boardId, response, request)
                 .map(BoardDetailsDto::new).orElseGet(() -> new BoardDetailsDto());
         model.addAttribute("boardDetailsDto",boardDetailsDto);
-        return "board/board-detail";
+        return "/WEB-INF/views/board/board-detail.jsp";
     }
     @GetMapping("/save")
     public String saveForm(){

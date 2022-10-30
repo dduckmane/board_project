@@ -66,4 +66,13 @@ h1 {
   height: 25px;
 }
 
+/* board detail */
+.content-container .text-area {
+  width: 1080px;
+  margin: 100px auto 100px;
+  height: 500px;
+
+  border: 1px solid #333;
+}
+
 

@@ -1,7 +1,5 @@
 package com.project.board;
 
-import com.google.gson.JsonObject;
-import com.nimbusds.oauth2.sdk.util.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +21,7 @@ public class UploadApiController {
     @PostMapping("/upload")
     public String upload(@RequestParam("food_content") String food_content, Model model){
         model.addAttribute("content",food_content);
-        return "board/board-detail";
+        return "/WEB-INF/views/board/board-detail.jsp";
     }
 
     // 이미지 업로드

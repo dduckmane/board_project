@@ -64,10 +64,7 @@
         <h1 class="main-title">${BoardDtoList.id}번 게시물</h1>
 
 
-        <div>
-            <div>
-
-            </div>
+        <div class="text-area">
             <div>
             content
             </div>
