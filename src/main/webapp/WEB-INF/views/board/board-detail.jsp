@@ -70,7 +70,12 @@
                 ${boardDetailsDto.content}
             </div>
         </div>
-
+        첨부파일
+        <c:forEach var="boardFilesDto" items="${boardDetailsDto.boardFilesDto}">
+            <c:if test="${boardFilesDto.boardFilesId ne null}">
+                <a href="/attach?boardFilesId=${boardFilesDto.boardFilesId}">${boardFilesDto.uploadFileName}</a>
+            </c:if>
+        </c:forEach>
 
 
         <!-- 댓글 영역 -->

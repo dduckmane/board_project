@@ -38,6 +38,10 @@ public class BoardService {
         Board saveBoard = Board.write(member, groupId, title, content,thumbNail,attachFiles);
 
         boardRepository.save(saveBoard);
+
+        saveBoard.getAttachFiles().stream().forEach(boardFiles -> {
+            log.info("boardFiles.getAttachFiles().getUploadFileName()={}",boardFiles.getAttachFiles().getUploadFileName());
+        });
     }
 
     @Transactional
@@ -54,7 +58,12 @@ public class BoardService {
     @Transactional
     public Optional<Board> findOne(Long boardId, HttpServletResponse response, HttpServletRequest request){
         log.info("find {}_ board",boardId);
-        Board board = boardRepository.findById(boardId).orElseGet(() -> new Board());
+        Board board = boardRepository.findById(boardId).orElseThrow();
+        System.out.println("board.getId()+ = " + board.getId()+"그리고"+board.getTitle());
+        board.getAttachFiles().stream().forEach(boardFiles -> {
+            System.out.println("findOne 실행");
+            System.out.println("boardFiles.getAttachFiles().getUploadFileName() = " + boardFiles.getAttachFiles().getUploadFileName());
+        });
         makeViewCount(board,response,request);
         return Optional.ofNullable(board);
     }

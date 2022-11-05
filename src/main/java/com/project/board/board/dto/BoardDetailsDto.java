@@ -1,11 +1,14 @@
 package com.project.board.board.dto;
 
 import com.project.board.board.domain.Board;
+import com.project.board.board.domain.UploadFile;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class BoardDetailsDto {
@@ -16,8 +19,10 @@ public class BoardDetailsDto {
     private String username;
     private String createTime;
 
-    private List<String>uploadFiles;
-//    private 첨부파일
+//    private List<UploadFile>uploadFiles;
+
+//    private Long boardFilesId;
+    private List<BoardFilesDto> boardFilesDto;
 
     public BoardDetailsDto(){
 
@@ -30,5 +35,6 @@ public class BoardDetailsDto {
         this.viewCnt = board.getViewCnt();
         this.username = board.getMember().getUsername();
         this.createTime = board.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        this.boardFilesDto = board.getAttachFiles().stream().map(BoardFilesDto::new).collect(Collectors.toList());
     }
 }

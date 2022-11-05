@@ -4,6 +4,9 @@ package com.project.board.board;
 
 
 import com.project.board.board.domain.Board;
+import com.project.board.board.domain.BoardFiles;
+import com.project.board.board.domain.UploadFile;
+import com.project.board.board.repository.BoardFilesRepository;
 import com.project.board.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,14 +14,20 @@ import org.springframework.core.io.UrlResource;
 
 
 import com.project.board.util.FileUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.util.UriUtils;
 
 import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
@@ -26,6 +35,8 @@ import java.net.MalformedURLException;
 public class loadController {
 
     private final BoardRepository boardRepository;
+
+    private final BoardFilesRepository boardFilesRepository;
 
     private static final String UPLOAD_PATH = "C:\\sl_dev\\upload";
     @ResponseBody
@@ -41,5 +52,25 @@ public class loadController {
         String fileFullPath = FileUtils.fileFullPath(storeFileName, UPLOAD_PATH);
         System.out.println("fileFullPath = " + fileFullPath);
         return new UrlResource("file:" + fileFullPath);
+    }
+    @GetMapping("/attach")
+    public ResponseEntity<UrlResource>downloadAttach(@RequestParam Long boardFilesId) throws MalformedURLException {
+
+        BoardFiles boardFiles = boardFilesRepository.findById(boardFilesId).orElseThrow();
+
+        String fileFullPath = FileUtils.fileFullPath(boardFiles.getAttachFiles().getStoreFileName(), UPLOAD_PATH);
+
+        UrlResource urlResource = new UrlResource("file:" + fileFullPath);
+
+        log.info("uploadFileName={}", boardFiles.getAttachFiles().getUploadFileName());
+
+        String encodedUploadFileName = UriUtils.encode(boardFiles.getAttachFiles().getUploadFileName(), StandardCharsets.UTF_8);
+
+        String contentDisposition="attachment; filename=\"" +
+                encodedUploadFileName+"\"";
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,contentDisposition)
+                .body(urlResource);
+
     }
 }

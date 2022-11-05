@@ -34,11 +34,12 @@ public class Board extends BaseEntity {
     private Member member;
 
     //썸네일 이미지
+    @Embedded
     private UploadFile thumbNail;
 
     //첨부파일
     @OneToMany(mappedBy = "board",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<BoardFiles>attachFiles=new ArrayList<>();
+    private List<BoardFiles>attachFiles;
 
 
     public Board(String title){
@@ -66,6 +67,7 @@ public class Board extends BaseEntity {
         board.thumbNail=thumbNail;
         member.getBoards().add(board);
         board.attachFiles=attachFiles;
+        attachFiles.stream().forEach(boardFiles -> boardFiles.addBoard(board));
         return board;
     }
     public void update(String content){

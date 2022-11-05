@@ -1,6 +1,5 @@
 package com.project.board.board.controller;
 
-import com.project.board.board.domain.Board;
 import com.project.board.board.domain.UploadFile;
 import com.project.board.board.dto.BoardDetailsDto;
 import com.project.board.board.dto.BoardDto;
@@ -12,7 +11,6 @@ import com.project.board.board.service.BoardService;
 import com.project.board.config.auth.PrincipalDetails;
 import com.project.board.member.domain.Member;
 import com.project.board.page.PageMaker;
-import com.project.board.util.FileUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -23,7 +21,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -65,8 +62,10 @@ public class BoardController {
     public String board(@PathVariable Long boardId, HttpServletResponse response, HttpServletRequest request,Model model){
         BoardDetailsDto boardDetailsDto = boardService
                 .findOne(boardId, response, request)
-                .map(BoardDetailsDto::new).orElseGet(() -> new BoardDetailsDto());
+                .map(BoardDetailsDto::new).orElseThrow();
+
         model.addAttribute("boardDetailsDto",boardDetailsDto);
+
         return "board/board-detail";
     }
     @GetMapping("/save/{groupId}")

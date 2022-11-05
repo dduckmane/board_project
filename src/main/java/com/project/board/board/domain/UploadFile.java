@@ -3,6 +3,7 @@ package com.project.board.board.domain;
 import com.project.board.util.FileUtils;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Data
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class UploadFile {
     private String uploadFileName;
     private String storeFileName;
