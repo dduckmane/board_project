@@ -13,7 +13,6 @@ public class BoardDto {
     private String name;
     private Boolean newArticle;
 
-
     public BoardDto(Board board) {
         this.id=board.getId();
         this.subTitle = board.substringTitle();

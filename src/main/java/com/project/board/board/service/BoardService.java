@@ -1,6 +1,7 @@
 package com.project.board.board.service;
 
 import com.project.board.board.domain.Board;
+import com.project.board.board.domain.UploadFile;
 import com.project.board.board.dto.BoardSaveForm;
 import com.project.board.board.dto.BoardUpdateForm;
 import com.project.board.board.repository.BoardRepository;
@@ -28,8 +29,8 @@ public class BoardService {
     private final EntityManager em;
 
     @Transactional
-    public void save(Member member, int groupId, String title,String content){
-        Board saveBoard = Board.write(member, groupId, title, content);
+    public void save(Member member, int groupId, String title, String content, UploadFile thumbNail){
+        Board saveBoard = Board.write(member, groupId, title, content,thumbNail);
         boardRepository.save(saveBoard);
     }
 

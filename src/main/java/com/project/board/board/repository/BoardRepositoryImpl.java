@@ -36,7 +36,7 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom{
                 .select(board).distinct()
                 .from(board)
                 .join(board.member,member).fetchJoin()
-                .leftJoin(board.replies,reply)
+//                .leftJoin(board.replies,reply)
                 .where(
                         usernameOrTitleEq(searchCondition.getAll())
                         ,usernameEq(searchCondition.getName())
@@ -51,7 +51,7 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom{
                 .select(board.count()).distinct()
                 .from(board)
                 .join(board.member,member)
-                .join(board.replies,reply)
+//                .join(board.replies,reply)
                 .where(
                         usernameOrTitleEq(searchCondition.getAll())
                         ,usernameEq(searchCondition.getName())

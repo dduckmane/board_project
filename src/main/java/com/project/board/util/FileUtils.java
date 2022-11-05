@@ -69,34 +69,16 @@ public class FileUtils {
 
         // 풀 경로 - 루트 경로 문자열 생성
         // full-path => E:/sl_dev/upload/2022/08/01/dfsdjfksfdkjs_상어.jpg
-        // res-path =>  /2022/08/01/dfsdjfksfdkjs_상어.jpg
-        // uploadPath => E:/sl_dev/upload
-        String responseFilePath = fileFullPath.substring(uploadPath.length());
+        // res-path =>  2022/08/01/dfsdjfksfdkjs_상어.jpg
+        // uploadPath => E:/sl_dev/upload/
+        String responseFilePath = fileFullPath.substring(uploadPath.length()+1);
 
         return responseFilePath.replace("\\", "/");
     }
-    public static String uploadFileFull(MultipartFile file, String uploadPath) {
 
-        // 중복이 없는 파일명으로 변경하기
-        // ex) 상어.png -> 3dfsfjkdsfds-djksfaqwerij-dsjkfdkj_상어.png
-        String newFileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+    public static String fileFullPath(String storeFileName, String uploadPath) {
 
-        // 업로드 경로를 변경
-        // E:/sl_dev/upload  ->  E:/sl_dev/upload/2022/08/01
-        String newUploadPath = getNewUploadPath(uploadPath);
-
-        // 파일 업로드 수행
-        File f = new File(newUploadPath, newFileName);
-
-        try {
-            file.transferTo(f);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // 파일의 풀 경로 (디렉토리경로 + 파일명)
-        String fileFullPath = newUploadPath + File.separator + newFileName;
-
+        String fileFullPath = uploadPath + File.separator + storeFileName;
 
         return fileFullPath.replace("\\", "/");
     }

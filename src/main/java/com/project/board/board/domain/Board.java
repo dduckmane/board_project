@@ -33,8 +33,9 @@ public class Board extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ElementCollection
-    private List<String>fileNames=new ArrayList<>();
+    //썸네일 이미지
+    private UploadFile thumbNail;
+
 
     public Board(String title){
         this.title=title;
@@ -52,12 +53,13 @@ public class Board extends BaseEntity {
     public Board(){
 
     }
-    public static Board write(Member member,int groupId,String title,String content){
+    public static Board write(Member member,int groupId,String title,String content,UploadFile thumbNail){
         Board board = new Board();
         board.title=title;
         board.member=member;
         board.groupId=groupId;
         board.content=content;
+        board.thumbNail=thumbNail;
         member.getBoards().add(board);
         return board;
     }
