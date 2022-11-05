@@ -13,7 +13,9 @@
 </head>
 <body>
 
-<form action="/user/board/save/${groupId}" method="post">
+<form action="/user/board/save/${groupId}" method="post" enctype="multipart/form-data">
+    썸네일이미지 등록
+    <input type="file" name="attachFile">
      제목: <input type="text" name="title">
     <textarea id="content" name="content"></textarea>
   <input type="submit" value="글등록">

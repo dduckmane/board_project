@@ -13,6 +13,8 @@ public class BoardDto {
     private String name;
     private Boolean newArticle;
 
+    private String attachFileName;
+
 
     public BoardDto(Board board) {
         this.id=board.getId();
@@ -20,6 +22,7 @@ public class BoardDto {
         this.viewCnt = board.getViewCnt();
         this.name = board.getMember().getName();
         this.newArticle=board.checkNewArticle();
+        this.attachFileName=board.getAttachFile();
     }
 
 }

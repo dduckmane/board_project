@@ -11,6 +11,7 @@ import com.project.board.board.service.BoardService;
 import com.project.board.config.auth.PrincipalDetails;
 import com.project.board.member.domain.Member;
 import com.project.board.page.PageMaker;
+import com.project.board.util.FileUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,14 +37,15 @@ public class BoardController {
     private final BoardRepository boardRepository;
     private final BoardService boardService;
 
+    private static final String UPLOAD_PATH = "C:\\sl_dev\\upload";
+
     @GetMapping("/list/{groupId}")
     public String main(@PathVariable int groupId, BoardSearchCondition searchCondition,
                                @PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.DESC)Pageable pageable, Model model){
         Page<BoardDto> result = boardRepository.searchAllCondition(groupId, searchCondition, pageable).map(BoardDto::new);
 
-        for (BoardDto boardDto : result) {
-            System.out.println("boardDto.getId() = " + boardDto.getId());
-        }
+
+        System.out.println("result.getTotalPages() = " + result.getTotalPages());
         
         int nowPage = result.getPageable().getPageNumber() + 1;
         int startPage = Math.max(nowPage - 4, 1);
@@ -72,9 +75,16 @@ public class BoardController {
 
     @PostMapping("/save/{groupId}")
     public String save(@AuthenticationPrincipal PrincipalDetails principalDetails, @ModelAttribute BoardSaveForm boardSaveForm,@RequestParam int groupId, RedirectAttributes redirectAttributes){
+
         log.info("/user/board/save POST");
         Member member = principalDetails.getMember();
-        boardService.save(member,groupId,boardSaveForm.getTitle(),boardSaveForm.getContent());
+
+        MultipartFile attachFile = boardSaveForm.getAttachFile();
+
+        String attachFileName = FileUtils.uploadFile(attachFile, UPLOAD_PATH);
+
+
+        boardService.save(member,groupId,boardSaveForm.getTitle(),boardSaveForm.getContent(),attachFileName);
         return "redirect:/user/board/list/{groupId}";
     }
     @GetMapping("/edit/{boardId}")

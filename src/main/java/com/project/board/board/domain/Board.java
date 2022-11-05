@@ -32,8 +32,8 @@ public class Board extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-    @ElementCollection
-    private List<String>fileNames=new ArrayList<>();
+
+    private String attachFile;
 
     public Board(String title){
         this.title=title;
@@ -51,12 +51,13 @@ public class Board extends BaseEntity {
     public Board(){
 
     }
-    public static Board write(Member member,int groupId,String title,String content){
+    public static Board write(Member member,int groupId,String title,String content,String attachFile){
         Board board = new Board();
         board.title=title;
         board.member=member;
         board.groupId=groupId;
         board.content=content;
+        board.attachFile=attachFile;
         member.getBoards().add(board);
         return board;
     }

@@ -28,8 +28,8 @@ public class BoardService {
     private final EntityManager em;
 
     @Transactional
-    public void save(Member member, int groupId, String title,String content){
-        Board saveBoard = Board.write(member, groupId, title, content);
+    public void save(Member member, int groupId, String title,String content,String attachFile){
+        Board saveBoard = Board.write(member, groupId, title, content,attachFile);
         boardRepository.save(saveBoard);
     }
 
