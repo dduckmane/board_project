@@ -26,5 +26,10 @@ public class ReplyService {
         Reply reply = replyRepository.findById(replyId).orElseGet(() -> new Reply());
         reply.update(replyText);
     }
+    @Transactional
+    public void delete(Long replyId){
+        Reply reply = replyRepository.findById(replyId).orElseThrow();
+        replyRepository.delete(reply);
+    }
 
 }

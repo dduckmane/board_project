@@ -32,8 +32,10 @@ public class Board extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
     //썸네일 이미지
     private UploadFile thumbNail;
+
 
     public Board(String title){
         this.title=title;

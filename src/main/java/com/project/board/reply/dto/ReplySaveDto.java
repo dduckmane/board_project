@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class ReplySaveDto {
+    private Long boardNo;
     private String replyText;
 
 }

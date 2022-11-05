@@ -89,7 +89,7 @@
                                 <div class="form-group">
                                     <label for="newReplyWriter" hidden>댓글 작성자</label>
                                     <input id="newReplyWriter" name="replyWriter" type="text" class="form-control"
-                                           placeholder="작성자 이름" style="margin-bottom: 6px;">
+                                           placeholder="MatJip 댓글란" style="margin-bottom: 6px;" disabled>
                                     <button id="replyAddBtn" type="button"
                                             class="btn btn-dark form-control">등록</button>
                                 </div>
@@ -349,7 +349,6 @@
 
         // 서버로 전송할 데이터들
         const replyData = {
-            replyWriter: $writerInput.value,
             replyText: $contentInput.value,
             boardNo: bno
         };
@@ -366,16 +365,12 @@
         fetch(URL, reqInfo)
             .then(res => res.text())
             .then(msg => {
-                if (msg === 'insert-success') {
                     alert('댓글 등록 성공');
                     // 댓글 입력창 리셋
                     $writerInput.value = '';
                     $contentInput.value = '';
                     // 댓글 목록 재요청
                     showReplies(document.querySelector('.pagination').dataset.fp);
-                } else {
-                    alert('댓글 등록 실패');
-                }
             });
     }
 
@@ -405,12 +400,8 @@
         })
             .then(res => res.text())
             .then(msg => {
-                if (msg === 'del-success') {
                     alert('삭제 성공!!');
                     showReplies(); // 댓글 새로불러오기
-                } else {
-                    alert('삭제 실패!!');
-                }
             });
     }
 
@@ -440,38 +431,34 @@
     // 댓글 수정 비동기 처리 이벤트
     function replyModifyEvent() {
 
-        const $modal = $('#replyModifyModal');
+        const $modal = document.getElementById('replyModifyModal');
 
         document.getElementById('replyModBtn').onclick =
             e => {
-                // console.log('수정 완료 버튼 클릭!');
+                console.log('수정 완료 버튼 클릭!');
 
                 // 서버에 수정 비동기 요청 보내기
                 const rno = e.target.closest('.modal').dataset.rno;
-                // console.log(rno);
+                console.log('수정 완료 버튼 클릭!'+rno);
+
+                const replyData = {
+                    replyText: document.getElementById('modReplyText').value
+                };
 
                 const reqInfo = {
                     method: 'PUT',
                     headers: {
                         'content-type': 'application/json'
                     },
-                    body: JSON.stringify({
-                        replyText: $('#modReplyText').val(),
-                        replyNo: rno
-                    })
+                    body: JSON.stringify(replyData)
                 };
 
 
                 fetch(URL + '/' + rno, reqInfo)
                     .then(res => res.text())
                     .then(msg => {
-                        if (msg === 'mod-success') {
                             alert('수정 성공!!');
-                            $modal.modal('hide'); // 모달창 닫기
                             showReplies(); // 댓글 새로불러오기
-                        } else {
-                            alert('수정 실패!!');
-                        }
                     });
             };
     }
