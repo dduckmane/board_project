@@ -1,5 +1,7 @@
 package com.project.board;
 
+import com.project.board.util.FileUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +16,10 @@ import java.io.*;
 import java.util.UUID;
 
 @Controller
+@Slf4j
 public class UploadApiController {
 
+    private static final String UPLOAD_PATH = "C:\\user\\wowo1\\Pictures\\Saved Pictures\\";
 
     // 이미지 업로드
     @RequestMapping(value="food/imageUpload.do", method = RequestMethod.POST)
@@ -37,7 +41,7 @@ public class UploadApiController {
             byte[] bytes = upload.getBytes();
 
             //이미지 경로 생성
-            String path = "C:\\user\\wowo1\\Pictures\\Saved Pictures" + "ckImage/";	// 이미지 경로 설정(폴더 자동 생성)
+            String path = FileUtils.getNewUploadPath(UPLOAD_PATH);
             String ckUploadPath = path + uid + "_" + fileName;
             File folder = new File(path);
             System.out.println("path:"+path);	// 이미지 저장경로 console에 확인
@@ -80,7 +84,7 @@ public class UploadApiController {
             throws ServletException, IOException{
 
         //서버에 저장된 이미지 경로
-        String path = "C:\\user\\wowo1\\Pictures\\Saved Pictures" + "ckImage/";	// 저장된 이미지 경로
+        String path = FileUtils.getNewUploadPath(UPLOAD_PATH);
         System.out.println("path:"+path);
         String sDirPath = path + uid + "_" + fileName;
 
