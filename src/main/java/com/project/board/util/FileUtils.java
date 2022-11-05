@@ -88,7 +88,7 @@ public class FileUtils {
      * @param uploadPath - 원본 업로드 경로
      * @return 일자별 폴더가 포함된 새로운 업로드 경로
      */
-    public static String getNewUploadPath(String uploadPath) {
+    private static String getNewUploadPath(String uploadPath) {
 
         // 오늘 년,월,일 정보 가져오기
         LocalDateTime now = LocalDateTime.now();

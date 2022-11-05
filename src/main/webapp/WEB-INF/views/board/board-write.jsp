@@ -18,8 +18,9 @@
     <input type="file" name="thumbNail">
      제목: <input type="text" name="title">
     <textarea id="content" name="content"></textarea>
-  <input type="submit" value="글등록">
+    <input type="submit" value="글등록">
     <input type="hidden" name="groupId" value="${groupId}">
+    <input type="file" multiple="multiple" name="attachFiles">
 </form>
 
     <script type="text/javascript">	// 글쓰기 editor 및 사진 업로드 기능
