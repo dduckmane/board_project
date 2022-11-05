@@ -32,6 +32,7 @@ public class Board extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
     @ElementCollection
     private List<String>fileNames=new ArrayList<>();
 

@@ -14,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,16 +40,21 @@ public class ReplyApiController {
         ListDto listDto = new ListDto(nowPage, endPage, startPage,results);
         return listDto;
     }
-    @PostMapping("/{boardId}")
-    public String save(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long boardId,@RequestBody ReplySaveDto replySaveDto){
+    @PostMapping("")
+    public ResponseEntity<String> save(@AuthenticationPrincipal PrincipalDetails principalDetails, @RequestBody ReplySaveDto replySaveDto){
         Member member = principalDetails.getMember();
-        replyService.save(boardId,member, replySaveDto.getReplyText());
-        return "save";
+        replyService.save(replySaveDto.getBoardNo(),member, replySaveDto.getReplyText());
+        return new ResponseEntity<>("save", HttpStatus.CREATED);
     }
     @PutMapping("/{replyId}")
-    public String update(@PathVariable Long replyId, @RequestBody ReplyUpdateDto replyUpdateDto){
+    public ResponseEntity<String> update(@PathVariable Long replyId, @RequestBody ReplyUpdateDto replyUpdateDto){
         replyService.update(replyId, replyUpdateDto.getReplyText());
-        return "hello";
+        return new ResponseEntity<>("update",HttpStatus.OK);
+    }
+    @DeleteMapping("/{replyId}")
+    public ResponseEntity<String> delete(@PathVariable Long replyId){
+        replyService.delete(replyId);
+        return new ResponseEntity<>("delete",HttpStatus.OK);
     }
 
 }
