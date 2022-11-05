@@ -70,6 +70,9 @@
                 ${boardDetailsDto.content}
             </div>
         </div>
+
+
+
         <!-- 댓글 영역 -->
 
         <div id="replies" class="row">

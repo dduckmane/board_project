@@ -1,6 +1,7 @@
 package com.project.board.board.service;
 
 import com.project.board.board.domain.Board;
+import com.project.board.board.domain.BoardFiles;
 import com.project.board.board.domain.UploadFile;
 import com.project.board.board.dto.BoardSaveForm;
 import com.project.board.board.dto.BoardUpdateForm;
@@ -17,7 +18,9 @@ import javax.persistence.EntityManager;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Transactional(readOnly = true)
 @Service
@@ -29,8 +32,11 @@ public class BoardService {
     private final EntityManager em;
 
     @Transactional
-    public void save(Member member, int groupId, String title, String content, UploadFile thumbNail){
-        Board saveBoard = Board.write(member, groupId, title, content,thumbNail);
+    public void save(Member member, int groupId, String title, String content, UploadFile thumbNail, List<UploadFile>uploadFiles){
+        List<BoardFiles> attachFiles = uploadFiles.stream().map(BoardFiles::new).collect(Collectors.toList());
+
+        Board saveBoard = Board.write(member, groupId, title, content,thumbNail,attachFiles);
+
         boardRepository.save(saveBoard);
     }
 

@@ -80,15 +80,11 @@ public class BoardController {
         log.info("/user/board/save POST");
         Member member = principalDetails.getMember();
 
-        MultipartFile thumbNail = boardSaveForm.getThumbNail();
+        UploadFile uploadFile = UploadFile.createUploadFile(boardSaveForm.getThumbNail(), UPLOAD_PATH);
 
-        String storeFileName = FileUtils.uploadFile(thumbNail, UPLOAD_PATH);
+        List<UploadFile> uploadFiles = UploadFile.storeFiles(boardSaveForm.getAttachFiles(), UPLOAD_PATH);
 
-        String uploadFileName = boardSaveForm.getThumbNail().getOriginalFilename();
-
-        UploadFile uploadFile = new UploadFile(uploadFileName, storeFileName);
-
-        boardService.save(member,groupId,boardSaveForm.getTitle(),boardSaveForm.getContent(),uploadFile);
+        boardService.save(member,groupId,boardSaveForm.getTitle(),boardSaveForm.getContent(),uploadFile,uploadFiles);
         return "redirect:/user/board/list/{groupId}";
     }
     @GetMapping("/edit/{boardId}")

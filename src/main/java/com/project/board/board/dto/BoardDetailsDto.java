@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Data
 public class BoardDetailsDto {
@@ -14,6 +15,8 @@ public class BoardDetailsDto {
     private Long viewCnt;
     private String username;
     private String createTime;
+
+    private List<String>uploadFiles;
 //    private 첨부파일
 
     public BoardDetailsDto(){

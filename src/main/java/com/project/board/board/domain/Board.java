@@ -36,6 +36,10 @@ public class Board extends BaseEntity {
     //썸네일 이미지
     private UploadFile thumbNail;
 
+    //첨부파일
+    @OneToMany(mappedBy = "board",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<BoardFiles>attachFiles=new ArrayList<>();
+
 
     public Board(String title){
         this.title=title;
@@ -53,7 +57,7 @@ public class Board extends BaseEntity {
     public Board(){
 
     }
-    public static Board write(Member member,int groupId,String title,String content,UploadFile thumbNail){
+    public static Board write(Member member,int groupId,String title,String content,UploadFile thumbNail,List<BoardFiles>attachFiles){
         Board board = new Board();
         board.title=title;
         board.member=member;
@@ -61,6 +65,7 @@ public class Board extends BaseEntity {
         board.content=content;
         board.thumbNail=thumbNail;
         member.getBoards().add(board);
+        board.attachFiles=attachFiles;
         return board;
     }
     public void update(String content){
