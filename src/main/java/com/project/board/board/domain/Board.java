@@ -33,7 +33,7 @@ public class Board extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
     //썸네일 이미지
-    private String attachFile;
+    private UploadFile thumbNail;
     //ckEditor
     @OneToMany(mappedBy = "board")
     private List<BoardPhoto>boardPhotos=new ArrayList<>();
@@ -54,13 +54,13 @@ public class Board extends BaseEntity {
     public Board(){
 
     }
-    public static Board write(Member member,int groupId,String title,String content,String attachFile){
+    public static Board write(Member member,int groupId,String title,String content,UploadFile thumbNail){
         Board board = new Board();
         board.title=title;
         board.member=member;
         board.groupId=groupId;
         board.content=content;
-        board.attachFile=attachFile;
+        board.thumbNail=thumbNail;
         member.getBoards().add(board);
         return board;
     }

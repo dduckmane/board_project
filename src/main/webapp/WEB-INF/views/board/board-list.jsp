@@ -146,12 +146,12 @@
 <a href="/user/board/save/${groupId}">글쓰기</a>
 <div>
   <c:forEach var="item" varStatus="status" items="${BoardDtoList}">
-    <a href="/user/board/${(item.id)}">
+    <a href="/user/board/${item.id}">
   <div class="col-md">
     <div class="card mb-3">
       <div class="row g-0">
         <div class="col-md-4">
-          <img data-file-name="${item.attachFileName}" class="card-img card-img-left img-fluid" src="" alt="Card image">
+          <img data-item-id="${item.id}" class="card-img card-img-left img-fluid" src="" alt="Card image">
         </div>
         <div class="col-md-8">
           <div class="card-body">
@@ -290,15 +290,14 @@
 
   function showImage(){
 
-    const $thumbList = document.querySelectorAll('img[data-file-name]');
+    const $thumbList = document.querySelectorAll('img[data-item-id]');
     console.log($thumbList);
     for (let $thumb of [...$thumbList]) {
-      let fileName = $thumb.dataset.fileName;
-      console.log('f:',fileName);
+      let itemId = $thumb.dataset.itemId;
+      console.log('f:',itemId);
 
       console.log('thumb:',$thumb);
-      if (fileName !== '') {
-        fetch('/images?filename=' + fileName)
+        fetch('/images?itemId=' + itemId)
                 .then(res => res.blob())
                 .then(img => {
 
@@ -307,7 +306,7 @@
                   const url = URL.createObjectURL(img);
                   $thumb.src = url;
                 });
-      }
+
     }
 
   }

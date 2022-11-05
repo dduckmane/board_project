@@ -9,9 +9,9 @@ public class BoardPhoto {
     @Column(name = "BoardPhoto_id", nullable = false)
     private Long id;
 
-
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
+
+    private UploadFile ckEditorPhoto;
 }

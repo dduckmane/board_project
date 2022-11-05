@@ -1,6 +1,7 @@
 package com.project.board.board.controller;
 
 import com.project.board.board.domain.Board;
+import com.project.board.board.domain.UploadFile;
 import com.project.board.board.dto.BoardDetailsDto;
 import com.project.board.board.dto.BoardDto;
 import com.project.board.board.dto.BoardSaveForm;
@@ -79,12 +80,15 @@ public class BoardController {
         log.info("/user/board/save POST");
         Member member = principalDetails.getMember();
 
-        MultipartFile attachFile = boardSaveForm.getAttachFile();
+        MultipartFile thumbNail = boardSaveForm.getThumbNail();
 
-        String attachFileName = FileUtils.uploadFile(attachFile, UPLOAD_PATH);
+        String storeFileName = FileUtils.uploadFile(thumbNail, UPLOAD_PATH);
 
+        String uploadFileName = boardSaveForm.getThumbNail().getOriginalFilename();
 
-        boardService.save(member,groupId,boardSaveForm.getTitle(),boardSaveForm.getContent(),attachFileName);
+        UploadFile uploadFile = new UploadFile(uploadFileName, storeFileName);
+
+        boardService.save(member,groupId,boardSaveForm.getTitle(),boardSaveForm.getContent(),uploadFile);
         return "redirect:/user/board/list/{groupId}";
     }
     @GetMapping("/edit/{boardId}")

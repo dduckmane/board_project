@@ -76,13 +76,9 @@ public class FileUtils {
         return responseFilePath.replace("\\", "/");
     }
 
-    public static String fileFullPath(String fileName, String uploadPath) {
+    public static String fileFullPath(String storeFileName, String uploadPath) {
 
-
-
-        // 파일의 풀 경로 (디렉토리경로 + 파일명)
-        String fileFullPath = uploadPath + File.separator + fileName;
-
+        String fileFullPath = uploadPath + File.separator + storeFileName;
 
         return fileFullPath.replace("\\", "/");
     }
