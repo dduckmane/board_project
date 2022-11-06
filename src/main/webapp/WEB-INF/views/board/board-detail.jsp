@@ -439,7 +439,7 @@
     // 댓글 수정 비동기 처리 이벤트
     function replyModifyEvent() {
 
-        const $modal = document.getElementById('replyModifyModal');
+        const $modal = $('#replyModifyModal');
 
         document.getElementById('replyModBtn').onclick =
             e => {
@@ -467,6 +467,7 @@
                     .then(msg => {
                             alert('수정 성공!!');
                             showReplies(); // 댓글 새로불러오기
+                            $modal.modal('hide');
                     });
             };
     }
