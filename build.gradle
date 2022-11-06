@@ -15,9 +15,6 @@ plugins {
 bootWar.enabled=false;
 war.enabled=true;
 
-tasks.named('test'){
-	exclude '**/*'
-}
 
 
 group = 'com.spring'
@@ -79,7 +76,8 @@ dependencies {
 	implementation 'org.mariadb.jdbc:mariadb-java-client:3.0.6'
 }
 test {
-	useJUnitPlatform()
+//	useJUnitPlatform()
+	exclude '**/*'
 }
 //querydsl 추가 시작
 def querydslDir = "$buildDir/generated/querydsl"
