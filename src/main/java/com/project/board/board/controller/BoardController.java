@@ -35,7 +35,7 @@ public class BoardController {
     private final BoardRepository boardRepository;
     private final BoardService boardService;
 
-    private static final String UPLOAD_PATH = "C:\\sl_dev\\upload";
+    private static final String UPLOAD_PATH = "home/ec2-user/sl_dev/upload";
 
     @GetMapping("/list/{groupId}")
     public String main(@PathVariable int groupId, BoardSearchCondition searchCondition,
