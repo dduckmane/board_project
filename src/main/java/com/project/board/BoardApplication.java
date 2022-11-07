@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @SpringBootApplication
 
-public class BoardApplication extends SpringBootServletInitializer {
+public class BoardApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BoardApplication.class, args);
@@ -28,9 +28,6 @@ public class BoardApplication extends SpringBootServletInitializer {
 	public CommonsMultipartResolver commonsMultipartResolver(){
 		return new CommonsMultipartResolver();
 	}
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-		return builder.sources(BoardApplication.class);
-	}
+
 
 }

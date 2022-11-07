@@ -38,7 +38,7 @@ public class loadController {
 
     private final BoardFilesRepository boardFilesRepository;
 
-    private static final String UPLOAD_PATH = "/home/ec2-user/sl_dev/ckeditor";
+    private static final String UPLOAD_PATH = "C:\\sl_dev\\upload";
     @ResponseBody
     @GetMapping(value ="/images", produces = MediaType.IMAGE_PNG_VALUE)
     public UrlResource downloadImage(@RequestParam Long itemId) throws
