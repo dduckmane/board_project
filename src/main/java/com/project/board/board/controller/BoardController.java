@@ -13,6 +13,7 @@ import com.project.board.member.domain.Member;
 import com.project.board.page.PageMaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -30,7 +31,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/user/board")
 @RequiredArgsConstructor
-@Log4j2
+@Slf4j
 public class BoardController {
     private final BoardRepository boardRepository;
     private final BoardService boardService;
@@ -38,31 +39,41 @@ public class BoardController {
     private static final String UPLOAD_PATH = "C:\\sl_dev\\upload";
 
     @GetMapping("/list/{groupId}")
-    public String main(@PathVariable int groupId, BoardSearchCondition searchCondition,
+    public String list(@PathVariable int groupId, BoardSearchCondition searchCondition,
                                @PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.DESC)Pageable pageable, Model model){
+
+        log.info("/user/board/list/{} GET",groupId);
+
         Page<BoardDto> result = boardRepository.searchAllCondition(groupId, searchCondition, pageable).map(BoardDto::new);
 
-
-        System.out.println("result.getTotalPages() = " + result.getTotalPages());
-        
+        //pageMaker 생성
         int nowPage = result.getPageable().getPageNumber() + 1;
         int startPage = Math.max(nowPage - 4, 1);
         int endPage = Math.min(nowPage + 5, result.getTotalPages());
 
-        List<BoardDto> content = result.getContent();
-        model.addAttribute("BoardDtoList",content);
-        model.addAttribute("groupId",groupId);
-
         PageMaker pageMaker = new PageMaker(nowPage, endPage, startPage, result.isFirst(), result.isLast(), result.getTotalPages());
         model.addAttribute("pageMaker",pageMaker);
+
+        //content 생성
+        List<BoardDto> content = result.getContent();
+        model.addAttribute("BoardDtoList",content);
+
+        model.addAttribute("groupId",groupId);
 
         return "board/board-list";
     }
     @GetMapping("/{boardId}")
-    public String board(@PathVariable Long boardId, HttpServletResponse response, HttpServletRequest request,Model model){
+    public String details(@PathVariable Long boardId,@AuthenticationPrincipal PrincipalDetails principalDetails, HttpServletResponse response, HttpServletRequest request,Model model){
+
+        log.info("/user/board/{} GET",boardId);
+
+        //권한 처리
+        boolean checkWriter=boardService.checkWriter(principalDetails.getMember());;
+        model.addAttribute("checkWriter",checkWriter);
+
         BoardDetailsDto boardDetailsDto = boardService
                 .findOne(boardId, response, request)
-                .map(BoardDetailsDto::new).orElseThrow();
+                .map(BoardDetailsDto::new).orElseThrow();//예외를 만들어야 하나??
 
         model.addAttribute("boardDetailsDto",boardDetailsDto);
 
@@ -70,41 +81,54 @@ public class BoardController {
     }
     @GetMapping("/save/{groupId}")
     public String saveForm(@PathVariable int groupId,Model model){
+
+        log.info("/user/board/save/{} GET",groupId);
+
         model.addAttribute("groupId",groupId);
-        return "board/board-write";}
+
+        return "board/board-write";
+    }
 
     @PostMapping("/save/{groupId}")
-    public String save(@AuthenticationPrincipal PrincipalDetails principalDetails, @ModelAttribute BoardSaveForm boardSaveForm,@RequestParam int groupId, RedirectAttributes redirectAttributes){
+    public String save(@AuthenticationPrincipal PrincipalDetails principalDetails, @ModelAttribute BoardSaveForm boardSaveForm,@PathVariable int groupId, RedirectAttributes redirectAttributes){
 
-        log.info("/user/board/save POST");
+        log.info("/user/board/save/{} POST",groupId);
+
         Member member = principalDetails.getMember();
 
         UploadFile uploadFile = UploadFile.createUploadFile(boardSaveForm.getThumbNail(), UPLOAD_PATH);
-
         List<UploadFile> uploadFiles = UploadFile.storeFiles(boardSaveForm.getAttachFiles(), UPLOAD_PATH);
 
         boardService.save(member,groupId,boardSaveForm.getTitle(),boardSaveForm.getContent(),uploadFile,uploadFiles);
+
         return "redirect:/user/board/list/{groupId}";
     }
     @GetMapping("/edit/{boardId}")
-    public String editForm(@PathVariable Long boardId,Model model)
+    public String editForm(@PathVariable Long boardId,@AuthenticationPrincipal PrincipalDetails principalDetails, Model model,RedirectAttributes redirectAttributes) {
 
-    {
-        BoardUpdateForm BoardUpdateForm = boardRepository.findById(boardId).map(BoardUpdateForm::new).orElseGet(() -> new BoardUpdateForm());
+        log.info("/user/board/edit/{} GET",boardId);
+
+        BoardUpdateForm BoardUpdateForm = boardRepository.findById(boardId).map(BoardUpdateForm::new).orElseThrow();
         model.addAttribute("BoardUpdateForm",BoardUpdateForm);
-        return "board/board-modify";
+
+        return boardService.checkWriter(principalDetails.getMember()) ? "board/board-modify" : "redirect:/";
     }
     @PostMapping("/edit/{boardId}")
-    public String edit(@AuthenticationPrincipal PrincipalDetails principalDetails,@RequestParam Long boardId,@ModelAttribute BoardUpdateForm boardUpdateForm,RedirectAttributes redirectAttributes){
-        //들어온 사람이 boardId를 작성하기 않았으면 돌려보내줘야하는 코드를 서버에서도 알려줘야하고
-        //클라이언트로도 true와 false를 넘겨줘야한다.
+    public String edit(@PathVariable Long boardId,@ModelAttribute BoardUpdateForm boardUpdateForm,RedirectAttributes redirectAttributes){
+
+        log.info("/user/board/edit/{} POST",boardId);
+
         boardService.update(boardId,boardUpdateForm.getContent());
+
         return "redirect:/user/board/{boardId}";
     }
     @GetMapping("/delete/{boardId}")
-    //물어보기 외래키 제약조건??
     public String delete(@PathVariable Long boardId,RedirectAttributes redirectAttributes){
+
+        log.info("/user/board/delete/{} GET",boardId);
+
         boardService.delete(boardId);
+
         return "redirect:/";
     }
 }

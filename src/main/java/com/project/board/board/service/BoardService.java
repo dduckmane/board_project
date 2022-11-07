@@ -67,6 +67,13 @@ public class BoardService {
         makeViewCount(board,response,request);
         return Optional.ofNullable(board);
     }
+    
+    public boolean checkWriter(Member member){
+
+        return boardRepository.findByMember(member).orElse(null) != null;
+
+    }
+    
     private void makeViewCount(Board board, HttpServletResponse response, HttpServletRequest request) {
         Cookie foundCookie = WebUtils.getCookie(request, "board_" + board.getId());
 

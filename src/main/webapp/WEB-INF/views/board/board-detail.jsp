@@ -62,8 +62,11 @@
     <div class="content-container">
 
         <h1 class="main-title">${boardDetailsDto.id}번 게시물</h1>
-        <h2><a href="http://localhost:8080/user/board/edit/${boardDetailsDto.id}">수정버튼</a></h2>
-        <h2><a href="http://localhost:8080/user/board/delete/${boardDetailsDto.id}">삭제버튼</a></h2>
+
+        <c:if test="${checkWriter}">
+            <h2><a href="http://localhost:8080/user/board/edit/${boardDetailsDto.id}">수정버튼</a></h2>
+            <h2><a href="http://localhost:8080/user/board/delete/${boardDetailsDto.id}">삭제버튼</a></h2>
+        </c:if>
 
         <div class="text-area">
             <div>
